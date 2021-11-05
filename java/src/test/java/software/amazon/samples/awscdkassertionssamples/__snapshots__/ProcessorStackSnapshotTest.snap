@@ -1,0 +1,210 @@
+software.amazon.samples.awscdkassertionssamples.ProcessorStackSnapshotTest.testMatchesSnapshot=[
+  {
+    "Parameters": {
+      "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586ArtifactHash97E3F10B": {
+        "Description": "Artifact hash for asset \"6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586\"",
+        "Type": "String"
+      },
+      "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586S3BucketE40C5F0B": {
+        "Description": "S3 bucket for asset \"6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586\"",
+        "Type": "String"
+      },
+      "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586S3VersionKey189FBF34": {
+        "Description": "S3 key for asset version \"6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586\"",
+        "Type": "String"
+      }
+    },
+    "Resources": {
+      "LambdaFunctionAllowInvokeTopicsStackTopic1A54934186CE533EE": {
+        "Properties": {
+          "Action": "lambda:InvokeFunction",
+          "FunctionName": {
+            "Fn::GetAtt": [
+              "LambdaFunctionBF21E41F",
+              "Arn"
+            ]
+          },
+          "Principal": "sns.amazonaws.com",
+          "SourceArn": {
+            "Fn::ImportValue": "TopicsStack:ExportsOutputRefTopic198E71B3E74722020"
+          }
+        },
+        "Type": "AWS::Lambda::Permission"
+      },
+      "LambdaFunctionBF21E41F": {
+        "DependsOn": [
+          "LambdaFunctionServiceRoleDefaultPolicy32EEEE35",
+          "LambdaFunctionServiceRoleC555A460"
+        ],
+        "Properties": {
+          "Code": {
+            "S3Bucket": {
+              "Ref": "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586S3BucketE40C5F0B"
+            },
+            "S3Key": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Select": [
+                      0,
+                      {
+                        "Fn::Split": [
+                          "||",
+                          {
+                            "Ref": "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586S3VersionKey189FBF34"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "||",
+                          {
+                            "Ref": "AssetParameters6ce9cba0c9785156f59d00159e27431182962b409d385ab1d5f199541a970586S3VersionKey189FBF34"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              ]
+            }
+          },
+          "Environment": {
+            "Variables": {
+              "STATE_MACHINE_ARN": {
+                "Ref": "StateMachine2E01A3A5"
+              }
+            }
+          },
+          "Handler": "handler",
+          "Role": {
+            "Fn::GetAtt": [
+              "LambdaFunctionServiceRoleC555A460",
+              "Arn"
+            ]
+          },
+          "Runtime": "nodejs14.x"
+        },
+        "Type": "AWS::Lambda::Function"
+      },
+      "LambdaFunctionServiceRoleC555A460": {
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "ManagedPolicyArns": [
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                ]
+              ]
+            }
+          ]
+        },
+        "Type": "AWS::IAM::Role"
+      },
+      "LambdaFunctionServiceRoleDefaultPolicy32EEEE35": {
+        "Properties": {
+          "PolicyDocument": {
+            "Statement": [
+              {
+                "Action": "states:StartExecution",
+                "Effect": "Allow",
+                "Resource": {
+                  "Ref": "StateMachine2E01A3A5"
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          },
+          "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy32EEEE35",
+          "Roles": [
+            {
+              "Ref": "LambdaFunctionServiceRoleC555A460"
+            }
+          ]
+        },
+        "Type": "AWS::IAM::Policy"
+      },
+      "LambdaFunctionTopic1461E184C": {
+        "Properties": {
+          "Endpoint": {
+            "Fn::GetAtt": [
+              "LambdaFunctionBF21E41F",
+              "Arn"
+            ]
+          },
+          "Protocol": "lambda",
+          "TopicArn": {
+            "Fn::ImportValue": "TopicsStack:ExportsOutputRefTopic198E71B3E74722020"
+          }
+        },
+        "Type": "AWS::SNS::Subscription"
+      },
+      "StateMachine2E01A3A5": {
+        "DependsOn": [
+          "StateMachineRoleB840431D"
+        ],
+        "Properties": {
+          "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "StateMachineRoleB840431D",
+              "Arn"
+            ]
+          }
+        },
+        "Type": "AWS::StepFunctions::StateMachine"
+      },
+      "StateMachineRoleB840431D": {
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Statement": [
+              {
+                "Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "states.",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ".amazonaws.com"
+                      ]
+                    ]
+                  }
+                }
+              }
+            ],
+            "Version": "2012-10-17"
+          }
+        },
+        "Type": "AWS::IAM::Role"
+      }
+    }
+  }
+]
