@@ -12,7 +12,7 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.130.0",
+    "@aws-cdk/assert": "1.180.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
     "jest": "^26.4.2",
@@ -22,14 +22,14 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/assertions": "^1.130.0",
-    "@aws-cdk/aws-cloudwatch": "^1.130.0",
-    "@aws-cdk/aws-lambda": "^1.130.0",
-    "@aws-cdk/aws-sns": "^1.130.0",
-    "@aws-cdk/aws-sns-subscriptions": "^1.130.0",
-    "@aws-cdk/aws-sqs": "^1.130.0",
-    "@aws-cdk/aws-stepfunctions": "^1.130.0",
-    "@aws-cdk/core": "1.130.0",
+    "@aws-cdk/assertions": "^1.180.0",
+    "@aws-cdk/aws-cloudwatch": "^1.180.0",
+    "@aws-cdk/aws-lambda": "^1.180.0",
+    "@aws-cdk/aws-sns": "^1.180.0",
+    "@aws-cdk/aws-sns-subscriptions": "^1.180.0",
+    "@aws-cdk/aws-sqs": "^1.180.0",
+    "@aws-cdk/aws-stepfunctions": "^1.180.0",
+    "@aws-cdk/core": "1.180.0",
     "source-map-support": "^0.5.16"
   }
 }
